@@ -1,0 +1,9 @@
+<?php
+session_start();
+if(isset($_SESSION['role']))
+{
+    session_destroy();
+    session_unset();
+    header("Location:../pages/examples/login.php");
+}
+?>
