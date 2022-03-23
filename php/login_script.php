@@ -46,7 +46,7 @@ require "connection.php";
                             }
                             else{
                                 // customer
-                                header("Location:../pages/examples/affiliate_user.php");
+                                header("Location:../pages/examples/affiliate_home_user.php");
                             }
                         }
                         else{
@@ -74,7 +74,7 @@ require "connection.php";
                             else if($user_type==3)
                             {
                                 // customer
-                                header("Location:../pages/examples/affiliate_user.php");
+                                header("Location:../pages/examples/affiliate_home_user.php");
                             }
                          }
                          else{

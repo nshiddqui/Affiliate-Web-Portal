@@ -9,21 +9,7 @@ session_start();
 
         // $email=$_SESSION['user_email'];
         require_once("../../php/connection.php");
-        // $response=mysqli_query($con,"select * from users where email='$email' ");
-        // if(mysqli_num_rows($response)>0){
-        //     $data=mysqli_fetch_array($response);
-        //     $img=$data['img'];
-        //     $role=$data['role'];
-        //     $user_code=$data['user_code'];
-        //     $points=$data['referral_points'];
-        //     $refer_code=$data['referal_code'];
-        //     if ($role==3)
-        //     $role='Admin';
-            
-        //     $first_name=$data['first_name'];
-        //     $last_name=$data['last_name'];
-        // }
-        // die();
+
 ?>
 
 
@@ -40,20 +26,16 @@ session_start();
   <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="../../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-   <!-- materalize css -->
-   <!-- <link rel="stylesheet" href="../../plugins/materialize.min.css"> -->
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
 </head>
 
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
-
   <!-- Preloader -->
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__wobble" src="../dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
   </div>
-
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-dark">
     <!-- Left navbar links -->
@@ -157,6 +139,7 @@ session_start();
           <i class="far fa-bell"></i>
           <span class="badge badge-warning navbar-badge">15</span>
         </a>
+       
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <span class="dropdown-item dropdown-header">15 Notifications</span>
           <div class="dropdown-divider"></div>
@@ -250,6 +233,7 @@ session_start();
               </p>
             </a>
           </li>
+
           <li class="nav-item menu-open">
             <a href="admin_edit_campaign.php" class="nav-link inactive">
               <p>
@@ -270,22 +254,25 @@ session_start();
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-         
-            <form action="admin_user.php" method="GET" class="form_btn ">
-                <select name="filter_term" id="">
-                        <option value="first_name">first name</option>  
-                        <option value="email">email</option>  
-                        <option value="last_name">last name</option>  
-                        <option value="referral_points">referral points </option>  
-            </select>
-                <input type="submit" name="filter" class="btn-secondary"value="Filter" />
-            </form>
-            <!-- view notice -->
-            <div class="col l9 m9 s12">
-                <h4>View Users</h4>
-                <br>
-                <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3">
+            <h4>View Users</h4>
+            <br>
+          </div>
+            <div class="col-md-4">
+              <form action="admin_user.php" method="GET" class="form_btn ">
+                <select name="filter_term" id="" class='form-control'>
+                  <option >Filter Choose</option>  
+                  <option value="first_name">First name</option>  
+                  <option value="email">Email</option>  
+                  <option value="last_name">Last name</option>  
+                  <option value="referral_points">Referral points </option>  
+                </select>
+                <input type="submit" name="filter" class="btn btn-info btn-sm mt-2 w-100"value="Filter" />
+              </form>
+            </div>
+        </div>
+         <div class="container-fluid">
         <!-- pagination code  -->
                 <?php
                         $per_page_result=5;
@@ -309,19 +296,18 @@ session_start();
                         $total_record=mysqli_num_rows(mysqli_query($con,"select * from users"));
                         // ceil is used for round of the number in int
                         $pagi=ceil($total_record/$per_page_result);
-                        // echo $pagi;
-
+                        // filter select option list
                         if(isset($_GET['filter']))
                         {
                             $filter_term=$_GET['filter_term'];
-                            echo $filter_term;
-                            // die();
                             $response=mysqli_query($con,"select * from users order by '$filter_term'");
                         }
                         else{
                          $sql="select * from users ORDER BY created desc limit $start,$per_page_result ";
                         $response=mysqli_query($con,$sql) or die(mysqli_error($con));
                         }
+                        //end filter select option list
+                        
                     ?>
         <!-- display search user result -->
                     <div id="show_table_user">
@@ -365,9 +351,13 @@ session_start();
                 <td data-label='Time'  >$data[created]</td>
 
                 <td data-label='Action' >
-                <a href='../../php/activate_and_deactivate_user.php?a_id=$data[id]' class='btn btn-primary'><i class='fas fa-person-circle-check'>Activate</i></a>
-
-                  <a href='../../php/activate_and_deactivate_user.php?d_id=$data[id] class='btn btn-secondary'><i class='fas fa-person-circle-xmark'></i>Deactivate</a></td> ";
+                ";
+               if($data['status']!='complete'){
+                echo "<a href='../../php/activate_and_deactivate_user.php?a_id=$data[id]' class='btn btn-primary btn-sm'><i class='fas fa-person-circle-check'>Activate</i></a>";
+                }
+                else{
+                  echo "<a href='../../php/activate_and_deactivate_user.php?d_id=$data[id] 'class='btn btn-danger btn-sm'><i class='fas fa-person-circle-xmark'></i>Deactivate</a></td> ";
+                }
                 echo"</tr>";
             }
         }
@@ -387,7 +377,7 @@ session_start();
                     </div>
             </div>
             <div class="container">
-                <div class="col s12 ">
+                <div class="col-md-12 ">
                     <ul class="pagination">
                         <?php
             if($current_page==1){
@@ -485,21 +475,15 @@ session_start();
             $.ajax({
                 url: "../../php/search.php",
                 method: "GET",
-                // dataType: "json",
                 data: { search: search_term },
                 success: function(data) {
-                    // console.log(data);
-                    // JSON
-                    $('#show_table_user').hide();
-                    $('#show_table_id').html(data);
+                    $('#show_table_user').html(data).show();
+                    $('#show_table_id').hide();
                 }
             });
         });
-    $('.form_btn').hide();
-    function toggle_form() {
-        $('.form_btn').toggle();
-    }
     });
+        
     //###################################################3 jquery end
 </script>
 </body>

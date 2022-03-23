@@ -32,19 +32,22 @@ if(isset($_GET['search']))
                         <td data-label='refer_code'  >$data[referal_code]</td>
                         <td data-label='Time'>$data[created]</td>
                         <td data-label='Action'>
-                        <a href='../../php/activate_and_deactivate_user.php?a_id=$data[id]' class='btn btn-primary'>Activate</a> |
-        
-                          <a href='../../php/activate_and_deactivate_user.php?d_id=$data[id] 'class='btn btn-secondary danger'>Deactivate</a></td> ";
+                        ";
+                    if($data['status']!='complete'){
+                        echo "<a href='../../php/activate_and_deactivate_user.php?a_id=$data[id]' class='btn btn-primary btn-sm'><i class='fas fa-person-circle-check'>Activate</i></a>";
+                        }
+                        else{
+                        echo "<a href='../../php/activate_and_deactivate_user.php?d_id=$data[id] 'class='btn btn-danger btn-sm'><i class='fas fa-person-circle-xmark'></i>Deactivate</a></td> ";
+                        }
                         echo"</tr>";
             }
         $html.="</table>";
-        // convert data into json formate 
-        print json_encode( $html);
+         echo $html;
      }
     else{
         $html="<h4>No Record Found!</h4>";
-        print json_encode($html);     
-    }
+        echo $html;     
+        }
     }
 }
 else{

@@ -8,7 +8,25 @@ session_start();
 // }
 
 require_once("../../php/connection.php");
-       
+if(isset($_GET['click_allow_user']))
+{
+  // echo "<script>alert('click')</script>";
+  $user_email=$_GET['allow_user'];
+  $id=$_GET['id'];
+  if($user_email!='Allow User'){
+
+    echo "<script>alert($user_email)</script>";
+    $check_mysqli=mysqli_query($con,"update campaign set campaign_allow_user='$user_email' where campaign_id='$id'");
+    if($check_mysqli){
+      echo "done";
+      die();
+    }
+  }
+
+}else{
+  echo"else";
+}     
+
 ?>
 
 
@@ -30,6 +48,15 @@ require_once("../../php/connection.php");
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
 </head>
+<style>
+  #desc{
+    overflow:auto;
+  }
+  #allow_user{
+    margin-left:-30px;
+    min-width:220px;
+  }
+</style>
 
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
@@ -254,23 +281,19 @@ require_once("../../php/connection.php");
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-                <!-- publish notice btn -->
+        <div class="row ">
+          <div class="col-md-6">
+                <!-- add product btn -->
                 <tr>
-                <td><button class="right btn-secondary danger toggle_btn m-3 p-1" id="add" onclick="toggle_form()"> 
+                <td><button class="flaot-left btn btn-success toggle_btn mt-1 py-1" id="add" onclick="toggle_form()"> 
                 <i class="fas fa-plus text-white"></i> Create New Campaign</button>
                 </td>
-               <!-- export btn -->
-               <td>
-                    <button id="export" class="btn-primary right"><i class="fas fa-save text-white left"></i> Export Data</button>
-                
-                </td>
-                <td>        <!--  error message -->
+                <td>       
+                   <!--  error message -->
                 <?php 
                     if(isset($_SESSION['error'])){
                     ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div class="alert alert-danger alert-dismissible fade show mt-1" role="alert">
                         <strong>Error </strong>
                         <?php
                             echo $_SESSION['error'];
@@ -283,7 +306,7 @@ require_once("../../php/connection.php");
                     // success message
                     if(isset($_SESSION['success'])){
                     ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show mt-1" role="alert">
                         <strong>Success </strong>
                         <?php
                             echo $_SESSION['success'];
@@ -296,6 +319,7 @@ require_once("../../php/connection.php");
                 ?> </td>
                 </tr>
             </div>
+          </div>
             <div class="container">
             <form action="../../php/add_campaign.php" method="POST" class="form_btn " enctype="multipart/form-data">
             <h5>Add new campaign</h5>
@@ -336,19 +360,24 @@ require_once("../../php/connection.php");
             </form>
           </div>
             <!-- view product -->
-            <div class="col lm-9 m9 sm-12 mt-4">
-                <h4>View Campaign</h4>
-                <br>
-                    <form action="admin_user.php" method="GET" class="form_btn ">
-                        <select name="filter_term" id="">
-                                <option value="first_name">first name</option>  
-                                <option value="email">email</option>  
-                                <option value="last_name">last name</option>  
-                                <option value="referral_points">referral points </option>  
-                        </select>
-                        <input type="submit" name="filter" class="btn-secondary"value="Filter" />
-                    </form>
-                <br>
+            <div class="row mt-3">
+          <div class="col-md-6">
+            <h4>View Campaign</h4>
+            <!-- <br> -->
+          </div>
+            <div class="col-md-3 float-left">
+              <form action="campaign.php" method="GET" class=" ">
+                <select name="filter_term" id="" class='form-control'>
+                  <option >Filter Choose</option>  
+                  <option value="campaign_name">Campaign name</option>  
+                  <option value="campaign_status">Campaign status</option>  
+                  <option value="campaign_category">Campaign category</option>  
+                  <option value="campaign_price">Price</option>  
+                </select>
+                <input type="submit" name="filter" class="btn btn-info btn-sm mt-2 w-100"value="Filter" />
+              </form>
+            </div>
+        </div>
                 <div class="container-fluid">
         <!-- pagination code  -->
                 <?php
@@ -369,16 +398,17 @@ require_once("../../php/connection.php");
                                 $start=$start*$per_page_result;
                             }
                         }
-
-                        $ress=mysqli_query($con,"select * from campaign");
-                        if($ress){
-
-                            $total_record=mysqli_num_rows($ress);
-                            // ceil is used for round of the number in int
-                            $pagi=ceil($total_record/$per_page_result);
-                            $sql="select * from campaign ORDER BY campaign_id desc limit $start,$per_page_result ";
+                             // filter select option list
+                            if(isset($_GET['filter']))
+                            {
+                                $filter_term=$_GET['filter_term'];
+                                $response=mysqli_query($con,"select * from campaign order by '$filter_term'");
+                            }
+                            else{
+                            $sql="select * from campaign ORDER BY campaign_id asc limit $start,$per_page_result ";
                             $response=mysqli_query($con,$sql) or die(mysqli_error($con));
-                        }
+                            }
+                        // end filter select option list
                     ?>
         <!-- display search product result -->
                     <div id="show_table_campaign">
@@ -386,8 +416,10 @@ require_once("../../php/connection.php");
         <!-- display all product -->
           <?php 
                 if($response){
-                    // while($data=mysqli_fetech_assoc($response)){
-                if($records=mysqli_num_rows($response)>0){
+                  $total_record=mysqli_num_rows($response);
+                if($total_record>0){
+                   // ceil is used for round of the number in int
+                   $pagi=ceil($total_record/$per_page_result);
                     echo "<br>Total Product : $total_record";
                     echo"<br>";
             ?>
@@ -395,9 +427,10 @@ require_once("../../php/connection.php");
             <table class="table striped bordered highlight" id="table_timetable ">
             <?php
                 echo "<tr>
+                <th id='allow_user'>Allow User </th>
                 <th >ID</th>
                 <th>Product Name</th>
-                <th style='width:80px; text-wrap:wrap'>Product Price</th>
+                <th style='width:80px; '>Product Price</th>
                 <th style='width:100px;'>Status</th>
                 <th style='width:200px;'>Product Description</th>
                 <th style='width:100px;'>Product short description</th>
@@ -414,25 +447,63 @@ require_once("../../php/connection.php");
                 //  print_r($data); 
                 $count++;
                 echo "<tr>
+                <td id='allow_user'>
+                <form method='GET' action='campaign.php' >
+               <select name='allow_user' class='form-control'>";
+               if($data['campaign_allow_user']){
+                 echo "<option>$data[campaign_allow_user]</option> ";
+               }
+               else{
+                echo "<option>Allow User</option> ";
+               }
+                  $select=mysqli_query($con,"select email from users ");
+                  if($select)
+                  {
+                    foreach($select as $s ){
+                      echo  "<option value='$s[email]'>$s[email]</option>";
+                    }
+                  }
+                  echo"</select>
+                  <input type='hidden' name='id' value='$data[campaign_id]' >
+                  <input type='submit'class='mt-1 btn btn-info btn-sm' name='click_allow_user' value='Confirm'>
+                  
+              </form>
+              </td>
                 <td data-label='Id' >$count</td>
                 <td data-label='campaign_name' >$data[campaign_name]</td>
                 <td data-label='campaign_price' >$data[campaign_price]</td>
                 <td data-label='status' >$data[campaign_status]</td>
-                <td data-label='campaign_desc'style='width:200px;text-wrap:wrap;'  >$data[campaign_desc]</td>
+                <td data-label='campaign_desc'style='width:200px;text-wrap:wrap;' id='desc' >$data[campaign_desc]</td>
                 <td data-label='campaign_short_desc' >$data[campaign_short_desc]</td>
                 <td data-label='campaign_category'  >$data[campaign_category]</td>
                 <td data-label='campaign_sub_category'  >$data[campaign_sub_category]</td>
                 <td data-label='campaign_link'  >$data[campaign_link]</td>
-                <td data-label='campaign_img'  ><img src='../../prd_media/$data[campaign_img]' widht='60px' height='60px' ></td>
-                <td data-label='campaign_video'>
-                <video autoplay muted loop widht='100px' height='100px'><source src='../../prd_media/$data[campaign_video]' type='video/mp4'></video></td>
-                <td data-label='Action' >
-                <a href='../../php/activate_and_deactivate_campaign.php?a_id=$data[campaign_id]' class='btn btn-primary'>Activate</a>
-                  <a href='../../php/activate_and_deactivate_campaign.php?d_id=$data[campaign_id] 'class='btn btn-secondary danger '>Deactivate</a>
-                  <a href='admin_edit_campaign.php?eid_id=$data[campaign_id]' ><i class='fas fa-edit'></i></a>
-                  <a href='admin_edit_campaign.php?d_id=$data[campaign_id] '><i class='fas fa-trash-alt'></i></a></td> ";
-                echo"</tr>";
-            }
+                <td data-label='campaign_img' >";
+                if($data['campaign_img']!=''){
+                    echo"<img src='../../prd_media/$data[campaign_img]' widht='60px' height='60px' ></td>";
+                }else{
+                   echo"No Image uploaded </td>";
+                }
+                echo"<td data-label='campaign_video'>";
+                if($data['campaign_video']!=''){
+                    echo"<video autoplay muted loop widht='100px' height='100px'><source src='../../prd_media/$data[campaign_video]' type='video/mp4'></video></td>";
+                }else{
+                   echo"No Video File </td>";
+                }
+                
+                echo"<td data-label='Action' >";
+                if($data['campaign_status']!='complete'){
+                    echo "<a href='../../php/activate_and_deactivate_campaign.php?a_id=$data[campaign_id]' class='btn btn-primary btn-sm''>Activate</a>";
+                }
+                else{
+                    echo"  <a href='../../php/activate_and_deactivate_campaign.php?d_id=$data[campaign_id] 'class='btn btn-info  btn-sm'>Deactivate</a>";
+                }
+                   echo "<a href='admin_edit_campaign.php?eid_id=$data[campaign_id]' ><i class='btn btn-primary btn-sm fas fa-edit text-white'></i></a>
+                  <a href='admin_edit_campaign.php?d_id=$data[campaign_id] '><i class='btn btn-danger btn-sm fas fa-trash-alt text-white'></i></a></td> ";
+                  echo"</tr>";
+                   }
+                   echo"</table>";
+            
         }
         else{
             if(isset($_GET['start'])){
@@ -458,7 +529,7 @@ require_once("../../php/connection.php");
             }
             ?>
                         <a href="admin_user.php?start=<?php echo $current_page-1;?>">
-                            <i class="fas fa-left"></i></a>
+                            <i class="fas fa-angle-left text-white"></i></a>
                         </li>
                         <?php
                     for($i=1;$i<=$pagi;$i++){
@@ -478,7 +549,7 @@ require_once("../../php/connection.php");
             }
                 ?>
                         <a href="admin_panel.php?start=<?php echo $current_page+1;?>">
-                            <i class="fas fa-right"></i></a>
+                            <i class="fas fa-angle-right text-white"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -528,19 +599,12 @@ require_once("../../php/connection.php");
 <script src="../../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.js"></script>
-
-<!-- PAGE PLUGINS -->
-<!-- jQuery Mapael -->
-<!-- <script src="../../plugins/jquery-mousewheel/jquery.mousewheel.js"></script> -->
-<!-- <script src="../../plugins/raphael/raphael.min.js"></script> -->
-
-<!-- <script src="../../plugins/materialize.min.js"></script> -->
 <script>
 
     $(document).ready(function() {
         // search box   
         $("#show_table_campaign").hide();
-                $('#show_table_id').show();
+        $('#show_table_id').show();
         $("#search").on("keyup", function() {
             // e.preventDefault();
             var search_term = $(this).val();
@@ -555,10 +619,8 @@ require_once("../../php/connection.php");
             $.ajax({
                 url: "../../php/search_prd.php",
                 method: "GET",
-                // dataType: "json",
                 data: { search: search_term },
                 success: function(data) {
-                    // console.log(data);
                     $('#show_table_campaign').html(data);
                     $('#show_table_id').html(data);
                 }
@@ -566,35 +628,11 @@ require_once("../../php/connection.php");
         });
         // end of search box
 
-    });
-
-    // select option
-    document.addEventListener('DOMContentLoaded', function () {
-        var elms = document.querySelectorAll('select');
-        M.FormSelect.init(elms);
-    });
-    //###################################################3 jquery end
-    $('.form_btn').hide();
-
-    function toggle_form() {
-        $('.form_btn').toggle();
-    }
-
-     // export notice databtn
-     var export_btn=document.getElementById("export");
-    export_btn.addEventListener("click", function(){
-        
-<?php
-   $_SESSION['export_notice']="yes";
-    ?>
-        setTimeout(function(){
-                export_btn.innerHTML = "Export";
-                export_btn.disabled = false;
-                window.location="../../php/export_campaign.php";    
-            },1000);
-            export_btn.innerHTML = "Wait...";
-            export_btn.disabled = true;            
-    });            
-</script>
+      });
+      $('.form_btn').hide();
+      function toggle_form() {
+          $('.form_btn').toggle();
+      }
+      </script>
 </body>
 </html>
