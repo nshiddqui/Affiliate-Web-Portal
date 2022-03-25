@@ -61,7 +61,7 @@ if(isset($_POST['register_index']))
                                     if($response)
                                     {
                                         $_SESSION['success']="Registeration Successfully Completed! Now You can Login!!";
-                                        header("Location:../pages/examples/login.php");
+                                        header("Location:../pages/login.php");
                                     }
                                 }
                             }
@@ -73,26 +73,26 @@ if(isset($_POST['register_index']))
                             if($response)
                             {
                                 $_SESSION['success']="Registeration Successfully Completed! Now You can Login!!";
-                                header("Location:../pages/examples/login.php");
+                                header("Location:../pages/login.php");
                             }
                         }
                     }
                     else{
                         $_SESSION['error']="Password Doesn't Match!";
-                        header("Location:../pages/examples/register.php");
+                        header("Location:../pages/register.php");
                         die();    
                     }
                 }
             }
             else{
                 $_SESSION['error']="Invalid Email ID!";
-                header("Location:../pages/examples/register.php");
+                header("Location:../pages/register.php");
                 die();
             }
         }
         else{
             $_SESSION['error']="Please Fill All the Field !";
-            header("Location:../pages/examples/register.php");
+            header("Location:../pages/register.php");
             die();
         }
     }   

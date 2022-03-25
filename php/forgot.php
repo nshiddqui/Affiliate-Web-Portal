@@ -14,18 +14,18 @@ if(isset($_POST['forgot-password']))
             $token=md5(rand());
             setcookie('user_token',$token,time()+(60*2));
             $_SESSION['success']="Your Email is Verfied!";
-            header("Location:../pages/examples/recover-password.php?token=$token&email=$email");      
+            header("Location:../pages/recover-password.php?token=$token&email=$email");      
             // die();
         }
         else{
             $_SESSION['error']="Invalid Email ID !";
-            header("Location:../pages/examples/forgot-password.php");
+            header("Location:../pages/forgot-password.php");
             die();
         }
     }
     else{
         $_SESSION['error']="Please Enter your Email ID !";
-        header("Location:../pages/examples/forgot-password.php");
+        header("Location:../pages/forgot-password.php");
     }
 }
 
@@ -59,25 +59,25 @@ if(isset($_POST['change_pwd']))
             //remove user_token cookie if password is changed 
             setcookie('user_token',$token,time()-60);
             $_SESSION['success']="Your Password is Changed! Now you can login with your new password!";
-            header("Location:../pages/examples/login.php");
+            header("Location:../pages/login.php");
         }
       }
       else
       {
           $_SESSION['error']="Password doesn't matched!";
-          header("Location:../pages/examples/recover-password.php?token=$token&email=$email");
+          header("Location:../pages/recover-password.php?token=$token&email=$email");
       }
     }
     else
     {
         $_SESSION['error']="All Field Are Mandetory !";
-        header("Location:../pages/examples/recover-password.php?token=$token&email=$email");
+        header("Location:../pages/recover-password.php?token=$token&email=$email");
     }
   }
   else
   {
     $_SESSION['error']="Invalid Token! Please Try Again!!";
-    header("Location:../pages/examples/forgot-password.php");
+    header("Location:../pages/forgot-password.php");
     die();
   }
 }

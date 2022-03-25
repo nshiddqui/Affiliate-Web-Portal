@@ -38,15 +38,15 @@ require "connection.php";
                             $_SESSION['role']=$user_type;
                             if($user_type==1){
                                 // admin page   
-                                header("Location:../pages/examples/admin.php");
+                                header("Location:../pages/admin_user.php");
                             }
                             else if($user_type==2){
                                 // client
-                                header("Location:../pages/examples/client.php");
+                                header("Location:../pages/employee/employee_user.php");
                             }
                             else{
                                 // customer
-                                header("Location:../pages/examples/affiliate_home_user.php");
+                                header("Location:../pages/affiliate_home_user.php");
                             }
                         }
                         else{
@@ -65,16 +65,16 @@ require "connection.php";
                             $_SESSION['role']=$user_type;
                             if($user_type==1){
                                 // admin page   
-                                header("Location:../pages/examples/admin.php");
+                                header("Location:../pages/admin_user.php");
                             }
                             else if($user_type==2){
                                 // client
-                                header("Location:../pages/examples/client.php");
+                                header("Location:../pages/employee/employee_user.php");
                             }
                             else if($user_type==3)
                             {
                                 // customer
-                                header("Location:../pages/examples/affiliate_home_user.php");
+                                header("Location:../pages/affiliate_home_user.php");
                             }
                          }
                          else{
@@ -86,17 +86,17 @@ require "connection.php";
                 }
                 else{
                     $_SESSION['error']="Incorrect Password!";  
-                    header("Location:../pages/examples/login.php");  
+                    header("Location:../pages/login.php");  
                 }
             }
             else{
                 $_SESSION['error']="Invalid Email ID!";
-                header("Location:../pages/examples/login.php");  
+                header("Location:../pages/login.php");  
              }
         }
         else{
             $_SESSION['error']="All Field Are Mandetory !";
-            header("Location:../pages/examples/login.php");  
+            header("Location:../pages/login.php");  
         }
     }
 ?>  
