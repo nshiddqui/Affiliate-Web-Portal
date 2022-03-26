@@ -1,25 +1,22 @@
 <?php
 session_start();
 //check customer login or not
-if((isset($_SESSION['role'])!=2) &&(isset($_SESSION['role'])!=3 ) &&!isset($_SESSION['user_email']))
-{
-    header('Location:login.php');
-    die();
-}
+// if((isset($_SESSION['role'])!=2) &&!isset($_SESSION['user_email']))
+// {
+//     header('Location:login.php');
+//     die();
+// }
 
         // $email=$_SESSION['user_email'];
         require_once("../php/connection.php");
 
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin </title>
-
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome Icons -->
@@ -46,15 +43,6 @@ if((isset($_SESSION['role'])!=2) &&(isset($_SESSION['role'])!=3 ) &&!isset($_SES
   </div> -->
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-dark">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="admin_user.php" class="nav-link">Home</a>
-      </li>
-      
-    </ul>
-
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
@@ -277,7 +265,7 @@ if((isset($_SESSION['role'])!=2) &&(isset($_SESSION['role'])!=3 ) &&!isset($_SES
             <h4>View Users</h4>
             <br>
           </div>
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
               <form action="admin_user.php" method="GET">
                 <select name="filter_term" id="" class='form-control'>
                   <option >Filter Choose</option>  
@@ -288,7 +276,7 @@ if((isset($_SESSION['role'])!=2) &&(isset($_SESSION['role'])!=3 ) &&!isset($_SES
                 </select>
                 <input type="submit" name="filter" class="btn btn-info btn-sm mt-2 w-100"value="Filter" />
               </form>
-            </div>
+            </div> -->
         </div>
          <div class="container-fluid">
         <!-- pagination code  -->
@@ -315,16 +303,16 @@ if((isset($_SESSION['role'])!=2) &&(isset($_SESSION['role'])!=3 ) &&!isset($_SES
                         // ceil is used for round of the number in int
                         // $pagi=ceil($total_record/$per_page_result);
                         // filter select option list
-                        if(isset($_GET['filter']))
-                        {
-                            $filter_term=$_GET['filter_term'];
-                            $response=mysqli_query($con,"select * from users order by '$filter_term'");
-                        }
-                        else{
+                        // if(isset($_GET['filter']))
+                        // {
+                        //     $filter_term=$_GET['filter_term'];
+                        //     $response=mysqli_query($con,"select * from users order by '$filter_term'");
+                        // }
+                        // else{
                         //  $sql="select * from users ORDER BY created desc limit $start,$per_page_result ";
                          $sql="select * from users ";
                         $response=mysqli_query($con,$sql) or die(mysqli_error($con));
-                        }
+                        // }
                         //end filter select option list
                         
                     ?>
@@ -422,12 +410,9 @@ if((isset($_SESSION['role'])!=2) &&(isset($_SESSION['role'])!=3 ) &&!isset($_SES
 <script src="../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.js"></script>
 <script>
-
     $(document).ready(function() {
         // search box   
         $("#show_table_user").hide();

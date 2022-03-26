@@ -6,7 +6,7 @@ require("connection.php");
 // delete campaign
 if(isset($_GET['d_id'])){
     $id=$_GET['d_id'];
-    $res=mysqli_query($con,"delete campaigns where id='$id'");
+    $res=mysqli_query($con,"delete from campaigns where id='$id'");
     if($res){
         $_SESSION['success']='Campaign Successfully Deleted!';
         header("Location:../pages/campaign.php");

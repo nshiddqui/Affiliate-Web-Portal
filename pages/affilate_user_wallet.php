@@ -1,22 +1,22 @@
 <?php
 session_start();
 //check customer login or not
-if(isset($_SESSION['role'])!=3 &&!isset($_SESSION['user_email']))
-{
-    header('Location:login.php');
-    die();
-}
-        $email=$_SESSION['user_email'];
+// if(isset($_SESSION['role'])!=1 &&!isset($_SESSION['user_email']))
+// {
+//     header('Location:login.php');
+//     die();
+// }
+        // $email=$_SESSION['user_email'];
+        $email='abc1@gmail.com';
         require_once("../php/connection.php");
         $response=mysqli_query($con,"select * from users where email='$email' ");
         if(mysqli_num_rows($response)>0){
             $data=mysqli_fetch_array($response);
-            $img=$data['img'];
             $role=$data['role'];
-            $user_code=$data['user_code'];
-            $points=$data['referral_points'];
-            $refer_code=$data['referal_code'];
-            if ($role==3)
+            $point_rate=$data['point_rate'];
+            $points=$data['total_points'];
+            $current_point=$data['current_point'];
+            if ($role==2)
             $role='Affiliate';
             
             $first_name=$data['first_name'];
@@ -45,143 +45,7 @@ if(isset($_SESSION['role'])!=3 &&!isset($_SESSION['user_email']))
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
 
-  <!-- Preloader -->
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__wobble" src="../dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-  </div>
-
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-dark">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-    </ul>
-
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Navbar Search -->
-      <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-          <i class="fas fa-search"></i>
-        </a>
-        <div class="navbar-search-block">
-          <form class="form-inline">
-            <div class="input-group input-group-sm">
-              <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-              <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                  <i class="fas fa-search"></i>
-                </button>
-                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                  <i class="fas fa-times"></i>
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </li>
-
-      <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Brad Diesel
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Call me whenever you can...</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John Pierce
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">I got your message bro</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Silvester
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">The subject goes here</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-        </div>
-      </li>
-      <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li>
-    </ul>
-  </nav>
-  <!-- /.navbar -->
-
+  
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -221,9 +85,8 @@ if(isset($_SESSION['role'])!=3 &&!isset($_SESSION['user_email']))
           <br>
           <hr>
           <li class="nav-item menu-open">
-            <a href="affiliate_user.php" class="nav-link active">
-              <p>
-              <i class='fas fa-share'></i> Refer and Earn
+            <a href="affiliate_home_user.php" class="nav-link inactive">
+              <p>View Campaigns
               </p>
             </a>
           </li>
@@ -234,16 +97,12 @@ if(isset($_SESSION['role'])!=3 &&!isset($_SESSION['user_email']))
               </p>
             </a>
           </li>
-       
-
-       
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
   </aside>
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -253,7 +112,6 @@ if(isset($_SESSION['role'])!=3 &&!isset($_SESSION['user_email']))
           <div class="col-sm-6">
             <h1 class="m-0"><?php echo ucfirst($first_name);?>,Wallet </h1>
             <br>
-
             <div class="input-group mb-3">
               <label for="point">Total Earnings
               <input type="text" class="form-control" disabled id="point" value="RS <?php echo $points;?>.00">
@@ -273,43 +131,9 @@ if(isset($_SESSION['role'])!=3 &&!isset($_SESSION['user_email']))
               </label>
             </div>
             
-            <form action="" method="GET">
-                <input type="submit"class="btn btn-primary" value="Verify" name="verify">
-            </form>
+                <button class="btn btn-primary" onclick="verify()">Verify Account</button>
           </div>
           
-          <div class="mt-3">
-            <h5>User Referred by you</h5>
-            <table class="table mt-3">
-              <th>Sno</th><th>Name</th><th>Email Id<th>User code</th>
-              
-      <?php
-              // require_once("../php/connection.php");
-              $res=mysqli_query($con,"select * from users where referal_code='$user_code'");
-              if(mysqli_num_rows($res)>0)
-              {
-                $count=1;
-                while($row=mysqli_fetch_array($res)){
-                  ?>
-                  <tr>
-                    <?php
-                    echo "<td>".$count."</td>";
-                    echo "<td>".$row['first_name']."</td>";
-                    echo "<td>".$row['email']."</td>"; 
-                    echo "<td>".$row['user_code']."</td>";
-                    $count++;
-                    ?>
-                  </tr>
-                  <?php
-                }
-              }
-            else{
-                  echo "else";
-                }
-              ?>
-
-            </table>
-          </div>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -343,14 +167,12 @@ if(isset($_SESSION['role'])!=3 &&!isset($_SESSION['user_email']))
 <script src="../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.js"></script>
-
-<!-- PAGE PLUGINS -->
-<!-- jQuery Mapael -->
-<script src="../plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
-<script src="../plugins/raphael/raphael.min.js"></script>
+<script>
+  function verify(){
+    window.location.href="verify_account.php";
+  }
+</script>
 </body>
 </html>

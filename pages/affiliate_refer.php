@@ -1,28 +1,26 @@
 <?php
 session_start();
 //check customer login or not
-if(isset($_SESSION['role'])!=3 &&!isset($_SESSION['user_email']))
+if(isset($_SESSION['role'])!=1 &&!isset($_SESSION['user_email']))
 {
     header('Location:login.php');
     die();
 }
-        $email=$_SESSION['user_email'];
-        require_once("../php/connection.php");
-        $response=mysqli_query($con,"select * from users where email='$email' ");
-        $count=mysqli_num_rows($response);
-        if($count>0){
-            $data=mysqli_fetch_array($response);
-            $img=$data['img'];
-            $role=$data['role'];
-            $user_code=$data['user_code'];
-            $points=$data['referral_points'];
-            $refer_code=$data['referal_code'];
-            $status=$data['status'];
-            if ($role==3)
-            $role='Affiliate';
-            $first_name=$data['first_name'];
-            $last_name=$data['last_name'];
-        }
+  // get link details 
+  if(isset($_GET['user_id']) && isset($_GET['category_id'])){
+    $category_id=$_GET['category_id'];
+    $user_id=$_GET['user_id'];
+  }
+    // $link=$data['link']."?user_id=".$user_id."&category_id=".$category_id;
+    // $ii="$link <br>";
+    // $data=explode('?',$ii);
+    // $link = $data[0];
+    // $link_details = $d[1];
+    // $details=explode("&",$link_details);
+    // $user_id= $details[0];
+    // $category_id= $details[1];
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -143,9 +141,9 @@ if(isset($_SESSION['role'])!=3 &&!isset($_SESSION['user_email']))
           if($status!="pending"){
               ?>
           <li class="nav-item menu-open">
-            <a href="affiliate_refer.php" class="nav-link active">
+            <a href="affiliate_home_user.php" class="nav-link active">
               <p>
-              <i class='fas fa-share'></i> Refer and Earn
+              <i class='fas fa-share'></i> Campaign List
               </p>
             </a>
           </li>
@@ -174,84 +172,7 @@ if(isset($_SESSION['role'])!=3 &&!isset($_SESSION['user_email']))
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Welcome, Hi <?php echo ucfirst($first_name);?></h1>
-            <small>
-            <?php
-            if($status=="pending"){
-              ?>
-              <br>
-              <h6>Your status is pending !! <br> Wait until your status is approved. It takes maximum 24 hours</h6>
-              <?php  
-            }
-            else{
-              
-            if($refer_code!=""){
-              echo $email." , Reffered by :".$refer_code;
-            }
-            ?>
-            </small>
-            <br>
-              
-            <div class="input-group mb-3 mt-3">
-              <label for="user">Your Refer Code
-              <input type="text" class="form-control" disabled id="user" value="<?php echo $user_code;?>">
-              </label>
-            </div>
-
-            <div class="input-group mb-3">
-              <label for="point">Your Referral Earning
-              <input type="text" class="form-control" disabled id="point" value="RS <?php echo $points;?>.00">
-              </label>
-            </div>
-          <?php
-                        $res=mysqli_query($con,"select * from users where referal_code='$user_code'");
-                        $counts=mysqli_num_rows($res);
-            ?>                      
-            <div class="input-group mb-3">
-              <label for="po">People joined via
-              <input type="text" class="form-control" disabled id="po" value="<?php echo $counts;?>">
-              </label>
-            </div>
-
-            <h6>Here your refer link</h6>
-            <small>Share your referral link and earn more </small>
-          </div>
-          <a class="form-control px-3 mt-2 bg-danger" style="width:80%"; href="http://localhost/affiliate/index.php?refer=<?php echo $user_code;?>">
-          http://localhost/affiliate/index.php?refer=<?php echo $user_code;?></a>
-
-          <div class="mt-3">
-            <h5>User Referred by you</h5>
-            <table class="table mt-3">
-              <th>Sno</th><th>Name</th><th>Email Id<th>User code</th>
-              
-      <?php
-              // require_once("../php/connection.php");
-              $res=mysqli_query($con,"select * from users where referal_code='$user_code'");
-              if(mysqli_num_rows($res)>0)
-              {
-                $count=1;
-                while($row=mysqli_fetch_array($res)){
-                  ?>
-                  <tr>
-                    <?php
-                    echo "<td>".$count."</td>";
-                    echo "<td>".$row['first_name']."</td>";
-                    echo "<td>".$row['email']."</td>"; 
-                    echo "<td>".$row['user_code']."</td>";
-                    $count++;
-                    ?>
-                  </tr>
-                  <?php
-                }
-              }
-            else{
-                  echo "else";
-                }
-?>
-            </table>
-<?php
-              }
-              ?>
+          
           </div>
           </div><!-- /.col -->
          

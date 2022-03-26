@@ -1,26 +1,6 @@
 <?php
 session_start();
-
-if(isset($_GET['refer']))
-{
-  global $user_code;
-  global $u_mail;
-  $user_code=$_GET['refer'];
-  require("../php/connection.php");
-  $response=mysqli_query($con,"select * from users where user_code='$user_code'");
-  if(mysqli_num_rows($response)>0){
-    $data=mysqli_fetch_array($response);
-    $u_mail=$data['email'];
-    $user_code=$data['user_code'];
-    $_SESSION['success']="Valid Refer code!";
-
-  }
-  else{
-    $_SESSION['error']="Invalid Refer code!";
-  }
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,9 +18,14 @@ if(isset($_GET['refer']))
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition register-page">
-  
-  <!--  error message -->
-  <?php 
+<div class="register-box">
+  <div class="register-logo">
+    <b>Affiliate</b>
+  </div>
+
+  <div class="card">
+       <!--  error message -->
+   <?php 
     if(isset($_SESSION['error'])){
     ?>
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -69,40 +54,11 @@ if(isset($_GET['refer']))
   }
   ?>
 
-<div class="register-box">
-  <div class="register-logo">
-    <b>Affiliate</b>
-  </div>
-
-  <div class="card">
     <div class="card-body register-card-body">
       <p class="login-box-msg">Register a new membership</p>
       <!-- <form action="../../index.html" method="post"> -->
       <!-- <form action="../../php/register.php" method="post"> -->
-      <form action="../php/register_script.php" method="post">
-
-      <?php
-      if(isset($_GET['refer']))
-      {
-        ?>
-      <div class="input-group mb-3">
-        <label for="ref">Refer Code 
-          <?php 
-          if($u_mail !="")
-          {
-            echo "by : $u_mail";
-            }
-          ?>
-       <input type="text" class="form-control"id="ref" name="ref_code" readonly value="<?php echo $_GET['refer'];?>"> 
-          </label>
-        </div>
-     <?php
-    }else{
-      ?>
-      <input type="hidden" class="form-control"id="ref" name="ref_code"> 
-<?php
-    }
-    ?>    
+      <form action="../php/register_script.php" method="post" enctype="multipart/form-data">
         <div class="input-group mb-3">
           <input type="text" class="form-control" name="first_name" placeholder="First name">
           <div class="input-group-append">
@@ -127,24 +83,9 @@ if(isset($_GET['refer']))
             </div>
           </div>
         </div>
+ 
+        <p id="error_mobile" class="text-danger"></p>
         <div class="input-group mb-3">
-          <input type="password" class="form-control" name="pwd"placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" name="confirm_pwd"placeholder="Retype password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <p><small id="error_mobile" class="text-danger"></small><br></p>
           <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="Mobile Number" autocomplete="off">
           <div class="input-group-append">
             <div class="input-group-text">
@@ -152,10 +93,32 @@ if(isset($_GET['refer']))
             </div>
           </div>
         </div>
-        <div class="input-group mb-3 " id="otp" >
-          <input type="tel" class="form-control bg-warning " name="otp"placeholder="OTP"  >
+     
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="aadhar_no"placeholder="Aadhar Card Number">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-document"></span>
+            </div>
+          </div>
         </div>
-      
+        <label for="aadhar_Card"><small>Upload Aadhar Card Image</small></label>
+        <div class="input-group mb-3">
+            <input type="file" class="form-control" id="aadhar_Card"name="aadhar_file">
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="pan_no"placeholder="Pan Card Number">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-doc"></span>
+            </div>
+          </div>
+        </div>
+
+        <label for="pan_Card"><small>Upload Pan Card Image</small></label>
+        <div class="input-group mb-3">
+            <input type="file" class="form-control" id="pan_Card"name="pan_file">
+        </div>
           <!-- /.col -->
           <div class="col-8" >
             <button type="submit" name="register_index" class="btn btn-primary btn-block">Register</button>
@@ -186,31 +149,5 @@ if(isset($_GET['refer']))
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <!-- <script src="../dist/js/adminlte.min.js"></script> -->
-<script>
-  $('#otp').hide();
-  var mobile=$('#mobile');
-  mobile.on('keyup',()=>{
-    var value=$('#mobile').val();
-    if(value.length==10){
-      $.ajax({
-        url:"https:www.mobile_number_vericaton.",
-        type:GET,
-        data:"mobile_no="+mobile,
-        success:function(data){
-                console.log(value);
-                 $('#otp').show();
-                
-        },
-        error:function(data){
-              $('#error_mobile').text("Invalid Mobile No.");
-        }
-      });
-
-    }
-    // console.log(value);
-    // alert('done');
-  });
-  
-</script>
 </body>
 </html>

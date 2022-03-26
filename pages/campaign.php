@@ -1,6 +1,6 @@
 <?php
 session_start();
-//check customer login or not
+//check admin login or not
 if((isset($_SESSION['role'])!=2) &&(isset($_SESSION['role'])!=3 ) &&!isset($_SESSION['user_email']))
 {
     header('Location:login.php');
@@ -8,7 +8,6 @@ if((isset($_SESSION['role'])!=2) &&(isset($_SESSION['role'])!=3 ) &&!isset($_SES
 }
 include("../php/connection.php");
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,21 +24,18 @@ include("../php/connection.php");
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <style>
+  /* hover style on table  */
   .highlight th{
     background: rgba(0,0,0,0.4);
     }
   .highlight tr:hover{
     background: rgba(0,0,0,0.4);
-    
   }
 </style>
-
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
-
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-dark">
-    
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
@@ -63,97 +59,6 @@ include("../php/connection.php");
           </form>
         </div>
       </li>
-
-      <!-- Messages Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-comments"></i>
-          <span class="badge badge-danger navbar-badge">3</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Brad Diesel
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">Call me whenever you can...</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="../dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  John Pierce
-                  <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">I got your message bro</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-          </a>
-
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <!-- Message Start -->
-            <div class="media">
-              <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Nora Silvester
-                  <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm">The subject goes here</p>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Message End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-        </div>
-      </li>
-      <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge">15</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">15 Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> 4 new messages
-            <span class="float-right text-muted text-sm">3 mins</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-users mr-2"></i> 8 friend requests
-            <span class="float-right text-muted text-sm">12 hours</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-file mr-2"></i> 3 new reports
-            <span class="float-right text-muted text-sm">2 days</span>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-        </div>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-          <i class="fas fa-expand-arrows-alt"></i>
-        </a>
-      </li>
       <li class="nav-item">
         <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
           <i class="fas fa-th-large"></i>
@@ -172,7 +77,6 @@ include("../php/connection.php");
       Admin
     </span>
     </a>
-
     <!-- Sidebar -->
     <div class="sidebar">
 
@@ -219,7 +123,7 @@ include("../php/connection.php");
           <li class="nav-item menu-open">
             <a href="campaign.php" class="nav-link active">
               <p>
-               Campaign List
+               Campaigns List
               </p>
             </a>
           </li>
@@ -281,11 +185,10 @@ include("../php/connection.php");
                 }
                 ?>
                 
-            <!-- view campaing -->
-            <div class="row mt-3">
+        <!-- view campaing -->
+        <div class="row mt-3">
           <div class="col-md-6">
             <h3>View Campaigns</h3>
-            <!-- <br> -->
           </div>
             <div class="col-md-3 float-left">
               <form action="campaign.php" method="GET" class=" ">
@@ -300,9 +203,8 @@ include("../php/connection.php");
             </div>
         </div>
                 <div class="container-fluid">
-        <!-- pagination code  -->
                 <?php
-                 // filter select option list
+                 // filter btn select option list
                             if(isset($_GET['filter']))
                             {
                                 $filter_term=$_GET['filter_term'];
@@ -314,7 +216,7 @@ include("../php/connection.php");
                             $response=mysqli_query($con,$sql) or die(mysqli_error($con));
                             }
                     ?>
-        <!-- display search campaing result -->
+                    <!-- display search campaing result -->
                     <div id="show_table_campaign">
                     </div>
                     <!-- display all campaing -->
@@ -326,7 +228,7 @@ include("../php/connection.php");
                     echo"<br>";
             ?>
         <div id="show_table_id" >
-            <table class="table table-bordered highlight" id="table_timetable ">
+            <table class="table table-bordered highlight" >
             <?php
                 echo "<tr>
                 <th >SNO.</th>
@@ -338,7 +240,6 @@ include("../php/connection.php");
                 <th style='width:100px;'>Action</th>
                 </tr>";
                 $count=0;   
-                
                 while($data=mysqli_fetch_assoc($response)){
                   $category_id=$data['category_id'];
                   $catergory_res=mysqli_query($con,"select name from categories where id='$category_id'");
@@ -349,18 +250,17 @@ include("../php/connection.php");
                   }
                 $count++;
                 echo "<tr>
-                <td  >$count</td>
-                <td  >$data[name]</td>
-                <td class=''>$data[status]</td>
-                <td  >$category_id_name</td>
-                <td   >$data[link]</td>
+                <td >$count</td>
+                <td >$data[name]</td>
+                <td >$data[status]</td>
+                <td >$category_id_name</td>
+                <td >$data[link]</td>
                 <td >";
                 if($data['video']!=''){
                     echo"<video autoplay muted loop widht='100px' height='100px'><source src='../prd_media/$data[video]' type='video/mp4'></video></td>";
                 }else{
                    echo"No Video File </td>";
                 }
-                
                 echo"<td data-label='Action' >";
                 if($data['status']!='active'){
                     echo "<a href='../php/activate_and_deactivate_campaign.php?a_id=$data[id]' class='btn btn-primary btn-sm''>Activate</a>";
@@ -372,18 +272,15 @@ include("../php/connection.php");
                   <a href='../php/edit_campaign_script.php?d_id=$data[id] '><i class='btn btn-danger btn-sm fas fa-trash-alt text-white'></i></a></td> ";
                   echo"</tr>";
                    }
-                   echo"</table>";
-            
         }
       }
             echo "</table>";
             ?>
-                    </div>
+                  </div>
             </div>
           
         </div>
     </div>
-
           </div><!-- /.col -->
           
         </div><!-- /.row -->
@@ -440,7 +337,6 @@ include("../php/connection.php");
         });
         // end of search box
       });
-
       </script>
 </body>
 </html>

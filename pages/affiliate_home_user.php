@@ -1,21 +1,26 @@
 <?php
 session_start();
 //check customer login or not
-if(isset($_SESSION['role']) !=1 &&!isset($_SESSION['user_email']))
-{
-    header('Location:login.php');
-    die();
-}
-        $email=$_SESSION['user_email'];
+// if(isset($_SESSION['role']) !=1 &&!isset($_SESSION['user_email']))
+// {
+//     header('Location:login.php');
+//     die();
+// }
+        // $email=$_SESSION['user_email'];
+        $email='abc1@gmail.com';
         require_once("../php/connection.php");
         $response=mysqli_query($con,"select * from users where email='$email' ");
         $count=mysqli_num_rows($response);
         if($count>0){
             $data=mysqli_fetch_array($response);
-            $img=$data['img'];
+            $aadhar_img=$data['aadhar_file'];
+            $pan_img=$data['pan_file'];
+            $aadhar_no=$data['aadhar_no'];
+            $pan_no=$data['pan_no'];
+            $user_id=$data['id'];
             $role=$data['role'];
             $status=$data['status'];
-            if ($role==3)
+            if ($role==2)
             $role='Affiliate';
             $first_name=$data['first_name'];
             $last_name=$data['last_name'];
@@ -42,50 +47,34 @@ if(isset($_SESSION['role']) !=1 &&!isset($_SESSION['user_email']))
     background: rgba(0,0,0,0.3);
     
   }
+  .copy-text input[type='text']{
+    padding: 10px;
+    font-size:13px;
+    color:#555;
+    border:none;
+    outline:none;
+  }
+  .copy-text button{
+    padding:5px;
+    background: #5784f5;
+    color:#fff;
+    font-size:12px;
+    border:none;
+    outline:none;
+    border-radius:30%;
+    cursor:pointer;
+  }
 </style>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
-
-  <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-dark">
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-      <!-- Notifications Dropdown Menu -->
-      <li class="nav-item dropdown" >
-        <a class="nav-link" data-toggle="dropdown" href="#" id="notification">
-          <i class="far fa-bell"></i>
-          <span class="badge badge-warning navbar-badge"><?php echo $count;?></span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header"><?php echo $count;?> Notifications</span>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-envelope mr-2"></i> <?php echo $count;?> new message
-            <?php
-            if($status=='complete'){
-              ?>
-            <span class="float-right text-muted text-sm">Now your pending request is completed.!! </span>
-            <?php
-          }else{
-            ?>
-            <span class="float-right text-muted text-sm text-wrap">Your request is pending wait until <br>your request is approved.!! </span>
-           <?php 
-          }
-          ?>
-          </a>
-      </li>
-    </ul>
-  </nav>
   <!-- /.navbar -->
-
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a " class="brand-link">
       <img src="../dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
       <span class="brand-text font-weight-light">
         <?php echo $role." User";?>
-        <small><?php echo $status;?></small>
       </span>
     </a>
     <!-- Sidebar -->
@@ -94,7 +83,7 @@ if(isset($_SESSION['role']) !=1 &&!isset($_SESSION['user_email']))
         <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item menu-open">
-              <a href="affiliate_home_user.php" class="nav-link uactive">
+              <a href="affiliate_index.php" class="nav-link uactive">
                 <p>
                   <i class='fas fa-home'></i> Home 
                 </p>
@@ -107,17 +96,12 @@ if(isset($_SESSION['role']) !=1 &&!isset($_SESSION['user_email']))
               </p>
             </a>
             </li>
-                <?php
-                if($status!="pending"){
-                    ?>
-                    <br>
-                    <!-- <h6>Your status is pending !! <br> Wait until your status is approved. It takes maximum 24 hours</h6> -->
           <br>
           <hr>
           <li class="nav-item menu-open">
-            <a href="affiliate_refer.php" class="nav-link active">
+            <a href="affiliate_home_user.php" class="nav-link active">
               <p>
-                <i class='fas fa-share'></i> Refer and Earn
+                View Campaings
               </p>
             </a>
           </li>
@@ -128,10 +112,6 @@ if(isset($_SESSION['role']) !=1 &&!isset($_SESSION['user_email']))
               </p>
             </a>
           </li>
-          <?php  
-            }
-            
-            ?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -144,22 +124,9 @@ if(isset($_SESSION['role']) !=1 &&!isset($_SESSION['user_email']))
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
-        <div class="row mb-4">
-          <div class="col-sm-6">
-            <h1 class="mt-0">Welcome, Hi <?php echo ucfirst($first_name);?></h1>
-            <small>
-            <?php
-            if($status=="pending"){
-              ?>
-              <br>
-              <h6>Your status is pending !! <br> Wait until your status is approved. It takes maximum 24 hours</h6>
-              <?php  
-            }
-            ?>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
+        <h4>All Campaings</h4>
         <!-- Info boxes -->
-        <div class="row">
+        <div class="row mt-3">
                <!-- display search user result -->
                <div id="show_table_user">
                     </div>
@@ -175,11 +142,11 @@ if(isset($_SESSION['role']) !=1 &&!isset($_SESSION['user_email']))
             <table class="table table-bordered highlight ml-4" id="table_timetable ">
             <?php
                 echo "<tr>
-                <th >SNO.</th>
+                <th style='width:10px'>SNO.</th>
                 <th>Name</th>
                 <th style='width:100px;'>Status</th>
-                <th style='width:100px;'>Category</th>
-                <th style='width:300px;'>Link</th>
+                <th style='width:50px;'>Category</th>
+                <th style='width:600px;'>Link</th>
                 <th style='width:100px;'>Video</th>
                 </tr>";
                 $count=0;   
@@ -190,45 +157,44 @@ if(isset($_SESSION['role']) !=1 &&!isset($_SESSION['user_email']))
                   if(mysqli_num_rows($catergory_res)>0){
                     $category_data=mysqli_fetch_assoc($catergory_res);
                     $category_id_name=$category_data['name'];
+                  
                   }
-                $count++;
+                  $count++;
                 echo "<tr>
                 <td  >$count</td>
                 <td  >$data[name]</td>
                 <td class=''>$data[status]</td>
                 <td  >$category_id_name</td>
-                <td   >$data[link]</td>
+                <td>
+                <div class='copy-text' id='copy-text' >
+                <input type='text' id='name' class='form-control name' readonly='readonly' value='$data[link]?user_id=$user_id&category_id=$data[category_id]'> 
+                <button class='mt-2 ' type='button'  ><i class='fas fa-clone '></i></button>
+                </div>
+                </td>
                 <td >";
                 if($data['video']!=''){
-                    echo"<video autoplay muted loop widht='100px' height='100px'><source src='../prd_media/$data[video]' type='video/mp4'></video></td>";
+                    echo"<a target='new_blank' href='../prd_media/$data[video]' class='btn btn-primary btn-sm' >View </a></td>";
+                    // echo"<video autoplay muted loop widht='100px' height='100px'><source src='../prd_media/$data[video]' type='video/mp4'></video></td>";
                 }else{
                    echo"No Video File </td>";
                 }
-               
               }
                    echo"</table>";
-            
-      }
-            echo "</table>";
+          }
             ?>
-                        </div>
+          </div>
         </div>
       </div>
-    
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
     <!-- Control sidebar content goes here -->
   </aside>
   <!-- /.control-sidebar -->
-
- 
 </div>
 <!-- ./wrapper -->
-
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="../plugins/jquery/jquery.min.js"></script>
@@ -238,13 +204,18 @@ if(isset($_SESSION['role']) !=1 &&!isset($_SESSION['user_email']))
 <script src="../plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.js"></script>
-
 <script>
-$(document).ready(function(){
-  $('#notification').on("click",function(){
-   
-    });
-});
+  // code for copy to clipboard
+  var btn=document.getElementsByClassName('copy-text');
+  var txt=document.getElementsByClassName('name');
+  for (let x=0;x<btn.length;x++)
+  {
+    btn[x].addEventListener('click',function(){
+      txt[x].select();
+      txt[x].setSelectionRange(0,99999);
+      navigator.clipboard.writeText(txt[x].value);
+    },false)
+  }
 </script>
 </body>
 </html>
