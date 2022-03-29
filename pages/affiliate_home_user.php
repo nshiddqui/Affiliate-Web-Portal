@@ -1,13 +1,12 @@
 <?php
 session_start();
 //check customer login or not
-// if(isset($_SESSION['role']) !=1 &&!isset($_SESSION['user_email']))
-// {
-//     header('Location:login.php');
-//     die();
-// }
-        // $email=$_SESSION['user_email'];
-        $email='abc1@gmail.com';
+if(isset($_SESSION['role']) !=2 &&!isset($_SESSION['user_email']))
+{
+    header('Location:login.php');
+    die();
+}
+        $email=$_SESSION['user_email'];
         require_once("../php/connection.php");
         $response=mysqli_query($con,"select * from users where email='$email' ");
         $count=mysqli_num_rows($response);
@@ -123,6 +122,35 @@ session_start();
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
+                  <!--  error message -->
+                  <?php 
+                    if(isset($_SESSION['error'])){
+                    ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error </strong>
+                        <?php
+                            echo $_SESSION['error'];
+                        ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <?php
+                    unset($_SESSION['error']);
+                    }
+                    // success message
+                    if(isset($_SESSION['success'])){
+                    ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success </strong>
+                        <?php
+                            echo $_SESSION['success'];
+                        ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <?php
+                    unset($_SESSION['success']);
+                }
+                ?> 
+
       <div class="container-fluid">
         <h4>All Campaings</h4>
         <!-- Info boxes -->
@@ -163,7 +191,9 @@ session_start();
                 echo "<tr>
                 <td  >$count</td>
                 <td  >$data[name]</td>
-                <td class=''>$data[status]</td>
+                <td class=''>";
+                if($data['status'] !='active'){echo 'Not Started';}else{echo 'Started';}
+                echo"</td>
                 <td  >$category_id_name</td>
                 <td>
                 <div class='copy-text' id='copy-text' >
@@ -173,7 +203,7 @@ session_start();
                 </td>
                 <td >";
                 if($data['video']!=''){
-                    echo"<a target='new_blank' href='../prd_media/$data[video]' class='btn btn-primary btn-sm' >View </a></td>";
+                    echo"<a target='new_blank' href='video_play_after_redirection.php?video=$data[video]&campaign_id=$data[id]&user_id=$user_id' class='btn btn-info btn-sm w-100' >View </a></td>";
                     // echo"<video autoplay muted loop widht='100px' height='100px'><source src='../prd_media/$data[video]' type='video/mp4'></video></td>";
                 }else{
                    echo"No Video File </td>";

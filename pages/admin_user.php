@@ -1,12 +1,11 @@
 <?php
 session_start();
 //check customer login or not
-// if((isset($_SESSION['role'])!=2) &&!isset($_SESSION['user_email']))
-// {
-//     header('Location:login.php');
-//     die();
-// }
-
+if((isset($_SESSION['role'])!=1) &&!isset($_SESSION['user_email']))
+{
+    header('Location:login.php');
+    die();
+}
         // $email=$_SESSION['user_email'];
         require_once("../php/connection.php");
 
@@ -214,7 +213,7 @@ session_start();
           <hr>
 
           <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+            <a href="admin_user.php" class="nav-link active">
               <p>
                Affiliate Users
               </p>
@@ -261,6 +260,37 @@ session_start();
     <div class="content-header">
       <div class="container-fluid">
         <div class="row">
+               <!--  error message -->
+               <?php 
+                    if(isset($_SESSION['error'])){
+                    ?>
+            <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+              <strong>Error </strong>
+              <?php
+                            echo $_SESSION['error'];
+                        ?>
+              <button type="button" class="close" data-dismiss="alert" aria-label="close"><span
+                  aria-hidden="true">&times;</span></button>
+            </div>
+            <?php
+                    unset($_SESSION['error']);
+                    }
+                    // success message
+                    if(isset($_SESSION['success'])){
+                    ?>
+            <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+              <strong>Success </strong>
+              <?php
+                            echo $_SESSION['success'];
+                        ?>
+              <button type="button" class="close" data-dismiss="alert" aria-label="close"><span
+                  aria-hidden="true">&times;</span></button>
+            </div>
+            <?php
+                    unset($_SESSION['success']);
+                }
+                ?>
+          </div>
           <div class="col-md-3">
             <h4>View Users</h4>
             <br>
@@ -339,6 +369,7 @@ session_start();
                 <th style='width:100px;'>Total  Points</th>
                 <th style='width:100px;'>Current Point</th>
                 <th style='width:100px;'>Point Rate</th>
+                <th style='width:200px;'>Add Point Rate</th>
                 <th style='width:200px;'>Created</th>
                 <th style='width:100px;'>Action</th>
                 </tr>";
@@ -355,14 +386,17 @@ session_start();
                 <td data-label='referral_points' >$data[total_points]</td>
                 <td data-label='user_code'  >$data[current_point]</td>
                 <td data-label='refer_code'  >$data[point_rate]</td>
+                <td data-label='refer_code'  >
+                <a href='add_point_rate.php?id=$data[id]' class='btn btn-sm btn-secondary '><i class='fas fa-plus-circle'></i> Point Rate</a>
+                </td>
                 <td data-label='Time'  >$data[created]</td>
                 <td data-label='Action' >
                 ";
                if($data['status']!='complete'){
-                echo "<a href='../php/activate_and_deactivate_user.php?a  _id=$data[id]' class='btn btn-primary btn-sm'><i class='fas fa-person-circle-check'>Activate</i></a>";
+                echo "<a href='../php/activate_and_deactivate_user.php?a_id=$data[id]' class='btn btn-primary btn-sm w-100'><i class='fas fa-person-circle-check'>Activate</i></a>";
                 }
                 else{
-                  echo "<a href='../php/activate_and_deactivate_user.php?d_id=$data[id] 'class='btn btn-danger btn-sm'><i class='fas fa-person-circle-xmark'></i>Deactivate</a></td> ";
+                  echo "<a href='../php/activate_and_deactivate_user.php?d_id=$data[id] 'class='btn btn-danger btn-sm w-100'><i class='fas fa-person-circle-xmark'></i>Deactivate</a></td> ";
                 }
                 echo"</tr>";
               }
