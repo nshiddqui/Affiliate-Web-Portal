@@ -10,7 +10,27 @@ require_once("../php/connection.php");
 $video=$_GET['video'];
 $user_id=$_GET['user_id'];
 $campaign_id=$_GET['campaign_id'];
-       
+
+// check campaign id is already in user_campaign_histories table
+$check =mysqli_query($con,"select * from user_campaign_histories where campaign_id='$campaign_id' and user_id='$user_id'");
+if(mysqli_num_rows($check)>0)
+{
+  // checking client watch video 
+  if(!isset($_COOKIE['visit_video']))
+  {
+    // if campaign id already in user_campaign_histories table
+    // update visit count in user_campaign_histories
+    $result =mysqli_query($con,"update user_campaign_histories set visit=visit+1 where campaign_id='$campaign_id' and user_id='$user_id'") ;
+    if($result){
+      setcookie('visit_video','yes',time()+60*60);
+    }
+  }
+}
+else{
+ // insert into user_campaign_histories
+ $visit=1;
+ $result =mysqli_query($con,"INSERT INTO user_campaign_histories (user_id,campaign_id,visit) VALUES('$user_id','$campaign_id','$visit')") or die();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
