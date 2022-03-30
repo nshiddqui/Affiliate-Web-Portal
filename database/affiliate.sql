@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2022 at 10:04 PM
+-- Generation Time: Mar 30, 2022 at 12:00 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -20,32 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `affiliate`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `blogs`
---
-
-CREATE TABLE `blogs` (
-  `id` int(11) NOT NULL,
-  `title` text NOT NULL,
-  `description` text NOT NULL,
-  `short_desc` text NOT NULL,
-  `blog_link` varchar(255) NOT NULL,
-  `blog_category` text NOT NULL,
-  `img` varchar(200) NOT NULL,
-  `video` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `blogs`
---
-
-INSERT INTO `blogs` (`id`, `title`, `description`, `short_desc`, `blog_link`, `blog_category`, `img`, `video`) VALUES
-(1, 'test blog', 'test test                                                                                                                                                                                                                                                                                                                                                                                                                                    ', 'short description', 'hello', 'test 1111111', 'Screenshot (89).png', ''),
-(2, 'test 1', 'sdfsf', 'fhgf', '', 'test', '645810324257_Screenshot (91).png', ''),
-(3, 'test 2', 'test 4', 'this is a test blog', '', 'test', 'Screenshot (280).png', '');
 
 -- --------------------------------------------------------
 
@@ -67,13 +41,10 @@ CREATE TABLE `campaigns` (
 --
 
 INSERT INTO `campaigns` (`id`, `name`, `video`, `link`, `category_id`, `status`) VALUES
-(1, 'game', 'Blessings of Baapu Full Video - Gagan Kokri Ft. Yograj Singh - Speed Records.mp4', 'http:www/gpg;efkld', 7, 'active'),
-(6, 'test product', 'Blessings of Baapu Full Video - Gagan Kokri Ft. Yograj Singh - Speed Records.mp4', 'http:www/gpg;efklddsd/.com', 0, 'complete'),
-(7, 'test', 'Ajj Marzi De Faisle Sunne Jatt Ne - Himant Sandhu - Dakuaan Da Munda -.mp4', 'djkfhsjk', 0, 'pending'),
-(10, '', '', '', 0, 'active'),
-(11, 'test campaign', '', 'http:www/gpg;efklddsd/.com/', 0, 'active'),
-(12, 'test11', 'Ajj Marzi De Faisle Sunne Jatt Ne - Himant Sandhu - Dakuaan Da Munda -.mp4', '', 6, 'active'),
-(13, 'dsfq', '', 'gfhgfh', 11, 'active');
+(1, 'game', 'Blessings of Baapu Full Video - Gagan Kokri Ft. Yograj Singh - Speed Records.mp4', 'http:www/gpg;efkld', 5, 'active'),
+(6, 'test product', 'Blessings of Baapu Full Video - Gagan Kokri Ft. Yograj Singh - Speed Records.mp4', 'http:www/gpg;efklddsd/.com', 0, 'pending'),
+(7, 'test', 'Ajj Marzi De Faisle Sunne Jatt Ne - Himant Sandhu - Dakuaan Da Munda -.mp4', 'djkfhsjk', 0, 'active'),
+(12, 'test11', 'Ajj Marzi De Faisle Sunne Jatt Ne - Himant Sandhu - Dakuaan Da Munda -.mp4', 'http://www.google.com', 6, 'active');
 
 -- --------------------------------------------------------
 
@@ -94,6 +65,13 @@ CREATE TABLE `campaign_form` (
   `status` text NOT NULL DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `campaign_form`
+--
+
+INSERT INTO `campaign_form` (`id`, `first_name`, `last_name`, `email`, `mobile`, `created`, `ip`, `campaign_id`, `user_id`, `status`) VALUES
+(1, 'amit', 'amit', 'amit100lanki70122@gmail.com', '9910628828', '2022-03-29 11:06:15', '::1', 1, 14, 'pending');
+
 -- --------------------------------------------------------
 
 --
@@ -105,16 +83,6 @@ CREATE TABLE `categories` (
   `name` varchar(100) NOT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `categories`
---
-
-INSERT INTO `categories` (`id`, `name`, `created`) VALUES
-(5, 'test1', '2022-03-25 16:46:48'),
-(6, 'test 2', '2022-03-25 16:47:20'),
-(7, 'game ', '2022-03-25 23:41:19'),
-(11, 'finance', '2022-03-26 11:40:43');
 
 -- --------------------------------------------------------
 
@@ -160,9 +128,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `role`, `first_name`, `last_name`, `email`, `mobile`, `otp`, `total_points`, `point_rate`, `status`, `created`, `current_point`, `aadhar_no`, `pan_no`, `aadhar_file`, `pan_file`) VALUES
-(1, 2, 'amit ', 'solanki', 'abc1@gmail.com', 2147483647, '', 0, 0, 'complete', '2022-03-20 12:38:40', 0, '', '', '', ''),
-(9, 1, 'admin', NULL, 'admin@gmail.com', 0, '', 0, 0, 'complete', '2022-03-21 21:56:36', 0, '', '', '', ''),
-(14, 2, 'amit', 'amit', 'amit100lanki70122@gmail.com', 9910628828, '3623', 0, 0, 'pending', '2022-03-26 13:25:53', 0, '18272', '1123', '1.jpg', 'Screenshot (90).png');
+(9, 1, 'admin', NULL, 'admin@gmail.com', 8527744381, '1429', 0, 1, 'pending', '2022-03-21 21:56:36', 0, '', '', '', ''),
+(14, 2, 'amit', 'amit', 'amit100lanki70122@gmail.com', 9910628828, '2884', 0, 0, 'complete', '2022-03-26 13:25:53', 0, '18272', '1123', '1.jpg', 'Screenshot (90).png'),
+(15, 2, 'amit ', 'test', 'test1@gmail.com', 123456890, '', 0, 0, 'pending', '2022-03-28 18:04:57', 0, '1122', '9863637283', 'Screenshot (103).png', '441413102439_Screenshot (90).png');
 
 -- --------------------------------------------------------
 
@@ -180,14 +148,16 @@ CREATE TABLE `user_campaign_histories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Indexes for dumped tables
+-- Dumping data for table `user_campaign_histories`
 --
 
+INSERT INTO `user_campaign_histories` (`id`, `user_id`, `campaign_id`, `status`, `visit`, `created`) VALUES
+(1, 14, 1, 'pending', 2, '2022-03-29 12:26:28'),
+(3, 14, 12, 'pending', 0, '2022-03-29 12:27:34');
+
 --
--- Indexes for table `blogs`
+-- Indexes for dumped tables
 --
-ALTER TABLE `blogs`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `campaigns`
@@ -230,28 +200,22 @@ ALTER TABLE `user_campaign_histories`
 --
 
 --
--- AUTO_INCREMENT for table `blogs`
---
-ALTER TABLE `blogs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
 -- AUTO_INCREMENT for table `campaigns`
 --
 ALTER TABLE `campaigns`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `campaign_form`
 --
 ALTER TABLE `campaign_form`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `kyc`
@@ -263,13 +227,13 @@ ALTER TABLE `kyc`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `user_campaign_histories`
 --
 ALTER TABLE `user_campaign_histories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

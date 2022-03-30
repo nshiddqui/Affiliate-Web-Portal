@@ -11,17 +11,21 @@ if(isset($_GET['otp'])){
             
         $result=mysqli_query($con,"update users set otp='$otp' where mobile='$mobile'");
         if($result){
-        $data="OTP send"; // echo "insert";
-        $status='true';
+        $data="OTP is send to your number!"; // echo "insert";
+        $status=true;
+        $html=['status'=>$status,'data'=>$data];
         }
     }
     else{
         $data="Invalid Mobile Number";
-        $status='false';
+        $status=false;
+        $html=['status'=>$status,'data'=>$data];
+
         // $html={'status':false,'data':$data};
     }
-    echo $status;
-    // echo json_encode($html);
+    // echo $status;
+    echo json_encode($html);
+    // print_r($html);
 }
 
 
