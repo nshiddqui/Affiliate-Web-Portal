@@ -26,7 +26,7 @@ $campaign_id=$_GET['campaign_id'];
 </head>
 <body>
     <div class="container center">
-        <div class="bg-warning mt-4">
+        <div class="bg-info mt-4 p-2">
             <p id='info'>Your are redirected after video finished</p>
         </div>
         <video autoplay="autoplay"  unmuted controls width='100%' height='100%' id='video' onended="redirect()" ><source  src='../prd_media/<?php echo $video;?>' type='video/mp4'></video>
@@ -40,6 +40,7 @@ $campaign_id=$_GET['campaign_id'];
 <script>
     // page redirection function
     function redirect(){
+
         window.location.href='campaign_form.php?user_id=<?php echo $user_id;?>&campaign_id=<?php echo $campaign_id;?>&video=<?php echo $video;?>';        
     }
 
@@ -47,15 +48,15 @@ $campaign_id=$_GET['campaign_id'];
     var v=document.querySelector('#video');
     // v.play();
     var vv=v.currentTime;
-        v.addEventListener('seeking',(e)=>{
-            if(e['isTrusted']){
-                if(vv < e['path'][0]['currentTime']){
-                    e['path'][0]['currentTime']=vv;
-                    e['isTrusted']=false;
+        // v.addEventListener('seeking',(e)=>{
+        //     if(e['isTrusted']){
+        //         if(vv < e['path'][0]['currentTime']){
+        //             e['path'][0]['currentTime']=vv;
+        //             e['isTrusted']=false;
 
-                }
-            }
-        })
+        //         }
+        //     }
+        // })
 </script>
 </body>
 </html>

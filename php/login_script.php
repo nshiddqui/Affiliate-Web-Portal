@@ -33,7 +33,7 @@ if(isset($_GET['otp'])){
 // check register form button clicked or not
     if(isset($_POST['login']))
     {
-        // getting data from user
+        // taking data from user
         $mobile=mysqli_real_escape_string($con,$_POST['mobile']);
         $otp=mysqli_real_escape_string($con,$_POST['otp']);
         
@@ -73,4 +73,50 @@ if(isset($_GET['otp'])){
             header("Location:../pages/login.php");  
         }
     }
+
+
+
+
+// admin login 
+if(isset($_POST['login_admin']))
+{
+    // taking data from admin
+    $email=mysqli_real_escape_string($con,$_POST['email']);
+    $pwd=mysqli_real_escape_string($con,$_POST['pwd']);
+    
+    if(!empty($email) && !empty($pwd) )
+    {
+        $result=mysqli_query($con,"select * from users where email='$email'");
+        if(mysqli_num_rows($result)>0)
+        {
+            $data=mysqli_fetch_array($result);
+            $pwd_hash=$data['password'];
+            // check pwd is correct or not
+            if(password_verify($pwd,$pwd_hash))
+            {
+                $user_type=$data['role'];
+                $_SESSION['mobile']=$mobile;
+                $_SESSION['user_email']=$data['email'];
+                $_SESSION['role']=$user_type;
+                if($user_type == 1){
+                    // admin page   
+                    header("Location:../pages/admin_user.php");
+                }
+            }
+            else{
+                $_SESSION['error']="Incorrect Password !";  
+                header("Location:../admin.php"); 
+            }
+        }
+        else{
+            $_SESSION['error']="Invalid Email ID!";  
+        header("Location:../admin.php");  
+        }
+    }
+    else{
+        $_SESSION['error']="Please enter data!";  
+        header("Location:../admin.php");  
+    }
+}
+
 ?>  

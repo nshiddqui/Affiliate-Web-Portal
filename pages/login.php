@@ -70,7 +70,7 @@ session_start();
         </div>
         <small id="otp_error"></small>
         <div class="input-group mb-3 " id="otp" >
-          <input type="text" class="form-control" name="otp"placeholder="OTP"  >
+          <input type="text" id='otp_input'class="form-control" name="otp"placeholder="OTP"  >
         </div>
           <!-- /.col -->
           <div class="col-4">
@@ -103,8 +103,9 @@ session_start();
       return otp;
       }
       // end function
-      
-      $('#otp').hide();
+
+      $('#otp_input').prop('disabled',true);
+      // $('#otp').hide();
       var mobile=$('#mobile');
       mobile.on('keyup',()=>{
         var value=$('#mobile').val();
@@ -119,11 +120,17 @@ session_start();
         method:'GET',
         data:{mobile:value,otp:create_otp},
         success:function(data){
-            // if(data =='true'){
-              $('#error_mobile').html("OTP is send to your number");
-              $('#otp_error').html('your temporary password is : '+create_otp);
-              $('#otp').show();
-            // }
+          console.log(data);
+          data=JSON.parse(data);
+          if(data['status']){
+            $('#error_mobile').html(data['data']);
+            $('#otp_error').html('your temporary password is : '+create_otp);
+            $('#otp_input').prop('disabled',false);
+          }else{
+            $('#otp_error').text();
+            $('#error_mobile').html(data['data']);
+            $('#otp_input').prop('disabled',true);
+         }
         // },
         // error:function(data){
         //   console.log(data);
